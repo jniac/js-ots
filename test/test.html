@@ -37,9 +37,9 @@
         </div>
         <script type="module">
 
-            import ots, { functionSignature, functionToString } from '../src/ots.js'
+            import ots, { functionSignature, functionToString, numberToString } from '../src/ots.js'
 
-            Object.assign(window, { ots, functionSignature })
+            Object.assign(window, { ots, functionSignature, numberToString })
 
             const log = (...args) => {
 
@@ -116,7 +116,16 @@
 
                 random: n => n * Math.random(),
 
+                anonym: (() => (x, y = 2) => x ** y)(),
+
             }
+
+            comment('functionToString test:')
+            log(numberToString(10))
+            log(numberToString(1/3))
+            log(numberToString(1/3, 6))
+
+            newLogBlock()
 
             comment('functionToString test:')
             log(functionToString(x => x * x))
@@ -124,7 +133,9 @@
             log(functionToString(function(x, y = 3) { return x * y }))
             log(functionToString(function multiply(x, y = 3) { return x * y }))
             log(functionToString(function length({ x,
-                y } = defaultFunction()) { return x * y }))
+                y } = defaultFunction(),
+                z = 3
+            ) { return x * y * z }))
 
             newLogBlock()
 

@@ -1,35 +1,15 @@
-function numberToString(n, toFixed = 1) {
+/**
+ * Auto-detect integer for shorter number strings, e.g.:
+ * numberToString(10) => '10'
+ * numberToString(1/3) => '.3'
+ *
+ */
+export const numberToString = (n, toFixed = 2) => {
 
 	if (n % 1)
 		return n.toFixed(toFixed)
 
 	return n.toString()
-
-}
-
-function ifstring(object, options, currentKey) {
-
-	let { stringPattern = '"' } = options
-
-	return typeof object === 'string'
-
-		? stringPattern + object + stringPattern
-
-		: ots(object, Object.assign(options, { currentKey }))
-
-}
-
-function iffunction(object, options, currentKey) {
-
-    return typeof object === 'function'
-
-        ? currentKey === object.name
-
-            ? `${currentKey}(${functionSignature(object)})`
-
-            : `${currentKey}: ${object.name || 'f'}(${functionSignature(object)})`
-
-        : `${currentKey}: ${ifstring(object, options, currentKey)}`
 
 }
 
@@ -61,7 +41,7 @@ export const functionSignature = fn => {
 			count--
 
 		if (count === 0)
-			return str.slice(start, current).replace(/\s+/g, ' ')
+			return str.slice(start, current).trim().replace(/\s+/g, ' ')
 
     }
 
@@ -76,6 +56,34 @@ export const functionToString = fn => {
     let name = fn.name || 'f'
 
     return `${name}(${signature})`
+
+}
+
+
+
+function ifstring(object, options, currentKey) {
+
+	let { stringPattern = '"' } = options
+
+	return typeof object === 'string'
+
+		? stringPattern + object + stringPattern
+
+		: ots(object, Object.assign(options, { currentKey }))
+
+}
+
+function iffunction(object, options, currentKey) {
+
+    return typeof object === 'function'
+
+        ? currentKey === object.name
+
+            ? functionToString(object)
+
+            : `${currentKey}: ${functionToString(object)}`
+
+        : `${currentKey}: ${ifstring(object, options, currentKey)}`
 
 }
 
@@ -106,7 +114,7 @@ export default function ots(object, options = {}) {
 	if (type === 'function')
 		return printFunction
 			? object.toString()
-			: `${object.name || 'f'}(${functionSignature(object)})`
+			: functionToString(object)
 
 	if (type === 'number')
 		return numberToString(object, toFixed)
