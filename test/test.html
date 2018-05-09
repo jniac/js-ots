@@ -3,26 +3,71 @@
     <head>
         <meta charset="utf-8">
         <title></title>
+        <style media="screen">
+
+            body, pre {
+                margin: 0;
+            }
+
+            body {
+                padding: 32px;
+            }
+
+            .block {
+                margin-bottom: 8px;
+                padding: 16px;
+                background-color: #eee;
+                border-radius: 5px;
+                overflow: scroll;
+            }
+
+            pre {
+                line-height: 1.5em;
+            }
+
+            pre.comment {
+                color: #0004;
+            }
+
+        </style>
     </head>
     <body>
-        <div class="output"></div>
+        <div class="output">
+            <div class="block"></div>
+        </div>
         <script type="module">
 
-            import ots, { functionSignature } from '../src/ots.js'
+            import ots, { functionSignature, functionToString } from '../src/ots.js'
 
             Object.assign(window, { ots, functionSignature })
 
             const log = (...args) => {
+
+                let format = typeof args[0] === 'object' && 'logFormat' in args[0] && args.shift().logFormat
 
                 // console.log(...args)
 
                 for (let data of args) {
 
                     let pre = document.createElement('pre')
+
+                    if (format)
+                        pre.classList.add(format)
+
                     pre.innerHTML = data
-                    document.querySelector('.output').append(pre)
+                    document.querySelector('.output .block:last-child').append(pre)
 
                 }
+
+            }
+
+            const comment = (...args) => log({ logFormat: 'comment' }, ...args)
+
+            const newLogBlock = () => {
+
+                let div = document.createElement('div')
+                div.classList.add('block')
+                document.querySelector('.output').append(div)
 
             }
 
@@ -72,6 +117,16 @@
                 random: n => n * Math.random(),
 
             }
+
+            comment('functionToString test:')
+            log(functionToString(x => x * x))
+            log(functionToString((x, y = 3) => x * y))
+            log(functionToString(function(x, y = 3) { return x * y }))
+            log(functionToString(function multiply(x, y = 3) { return x * y }))
+            log(functionToString(function length({ x,
+                y } = defaultFunction()) { return x * y }))
+
+            newLogBlock()
 
             log(ots({ test: 'test!' }))
             log(ots({ test: 'test!' }, 0))

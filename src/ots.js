@@ -33,7 +33,12 @@ function iffunction(object, options, currentKey) {
 
 }
 
-export function functionSignature(fn) {
+/**
+ * Returns the parameters of a function (the signature).
+ * functionSignature(x => x * x) => 'x'
+ * functionSignature((x, y = 3) => x * y) => 'x, y = 3'
+ */
+export const functionSignature = fn => {
 
 	let str = fn.toString()
 
@@ -56,11 +61,21 @@ export function functionSignature(fn) {
 			count--
 
 		if (count === 0)
-			return str.slice(start, current)
+			return str.slice(start, current).replace(/\s+/g, ' ')
 
     }
 
 	return ''
+
+}
+
+export const functionToString = fn => {
+
+    let signature = functionSignature(fn)
+
+    let name = fn.name || 'f'
+
+    return `${name}(${signature})`
 
 }
 
