@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <div class="output"></div>
+        <script type="module">
+
+            import ots, { functionSignature } from '../src/ots.js'
+
+            Object.assign(window, { ots, functionSignature })
+
+            const log = (...args) => {
+
+                // console.log(...args)
+
+                for (let data of args) {
+
+                    let pre = document.createElement('pre')
+                    pre.innerHTML = data
+                    document.querySelector('.output').append(pre)
+
+                }
+
+            }
+
+            let matrilinear = {
+
+                nickname: 'grand-ma',
+                name: 'eve',
+                age: 99,
+
+                child: {
+
+                    nickname: 'mom',
+                    name: 'mary',
+                    age: 55,
+
+                    child: {
+
+                        nickname: 'me',
+                        name: 'ana',
+                        age: 31,
+
+                        child: {
+
+                            nickname: 'daughter',
+                            name: 'priscilla',
+                            age: 1/3,
+
+                        },
+
+                    },
+
+                },
+
+            }
+
+            let goodBoy = {
+
+                name: 'Toto',
+                age: 7 + 1/3,
+
+                salute(salutation, ...interlocutors) {
+
+                    return `${interlocutors.map(interlocutor => `${salutation} ${interlocutor}!`).join(' ')} My name is ${this.name}.`
+
+                },
+
+                random: n => n * Math.random(),
+
+            }
+
+            log(ots({ test: 'test!' }))
+            log(ots({ test: 'test!' }, 0))
+            log(ots({ test: 'test!' }, { depth: 0, printKeys: false }))
+
+            log(ots(matrilinear))
+            log(ots(matrilinear, { printKeys: false }))
+            log(ots(matrilinear, Infinity))
+            log(ots(matrilinear.child.child.child, { toFixed: 6 }))
+
+            log(ots(goodBoy))
+            log(ots(goodBoy.salute('Hello', 'George', 'John', 'Paul', 'Ringo')))
+
+
+        </script>
+    </body>
+</html>
