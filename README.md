@@ -25,20 +25,20 @@ let object = {
     },
 
     // anonymous function
-    saySomething: (() => {
+    saySomething: (() => (n = 6) => {
 
         let alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
-        return 'aaaaaa'.split('').map(() => alphabet[Math.floor(alphabet.length * Math.random())])
+        return new Array(n).fill(0).map(() => alphabet[Math.floor(alphabet.length * Math.random())]).join('')
 
     })(),
 
 }
 
-ots(object)                 // { name: "foo", age: 7, parts: 0.33, child: { name: "bar" }, sayHello(), saySomething: f(n = Math.round(6 + 6 * Math.random())) }
+ots(object)                 // { name: "foo", age: 7, parts: 0.33, child: { name: "bar" }, sayHello(), saySomething: f(n = 6) }
 ots(object, 0)              // { name, age, parts, child, sayHello, saySomething }
-ots(object, 1)              // { name: "foo", age: 7, parts: 0.33, child: { name }, sayHello(), saySomething: f(n = Math.round(6 + 6 * Math.random())) }
-ots(object.saySomething())  // sdltwjnn
+ots(object, 1)              // { name: "foo", age: 7, parts: 0.33, child: { name }, sayHello(), saySomething: f(n = 6) }
+ots(object.saySomething())  // sdltwj
 ots(x => x * x)             // f(x)
 ots(object.sayHello)        // sayHello()
 
