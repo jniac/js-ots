@@ -1,7 +1,14 @@
+/*
+
+	Object-To-String
+	https://github.com/jniac/js-ots
+
+*/
+
 /**
  * Auto-detect integer for shorter number strings, e.g.:
  * numberToString(10) => '10'
- * numberToString(1/3) => '.3'
+ * numberToString(1/3) => '.33'
  *
  */
 export const numberToString = (n, toFixed = 2) => {

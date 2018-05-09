@@ -71,6 +71,13 @@
 
             }
 
+
+
+
+
+
+            // TEST
+
             let matrilinear = {
 
                 nickname: 'grand-ma',
@@ -136,6 +143,45 @@
                 y } = defaultFunction(),
                 z = 3
             ) { return x * y * z }))
+
+            newLogBlock()
+
+            let object = {
+
+                // string
+                name: 'foo',
+
+                // integer
+                age: 7,
+
+                // decimals
+                parts: 1 / 3,
+
+                // nested
+                child: { name: 'bar' },
+
+                // named function
+                sayHello() {
+                    return `Hello, my name is ${this.name}`
+                },
+
+                // anonymous function
+                saySomething: (() => (n = Math.round(6 + 6 * Math.random())) => {
+
+                    let alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+                    return new Array(n).fill(0).map(() => alphabet[Math.floor(alphabet.length * Math.random())]).join('')
+
+                })(),
+
+            }
+
+            log(ots(object))
+            log(ots(object, 0))
+            log(ots(object, 1))
+            log(ots(object.saySomething()))
+            log(ots(x => x * x))
+            log(ots(object.sayHello))
 
             newLogBlock()
 
