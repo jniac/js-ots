@@ -29,8 +29,8 @@ export const functionSignature = fn => {
 
 	let str = fn.toString()
 
-    if (/^\w+\s*=>/.test(str))
-        return str.match(/^(\w+)\s*=>/)[1]
+	if (/^\w+\s*=>/.test(str))
+		return str.match(/^(\w+)\s*=>/)[1]
 
 	let start = str.indexOf('(') +1
 	let current = start
@@ -50,7 +50,7 @@ export const functionSignature = fn => {
 		if (count === 0)
 			return str.slice(start, current).trim().replace(/\s+/g, ' ')
 
-    }
+	}
 
 	return ''
 
@@ -58,11 +58,11 @@ export const functionSignature = fn => {
 
 export const functionToString = fn => {
 
-    let signature = functionSignature(fn)
+	let signature = functionSignature(fn)
 
-    let name = fn.name || 'f'
+	let name = fn.name || 'f'
 
-    return `${name}(${signature})`
+	return `${name}(${signature})`
 
 }
 
@@ -82,15 +82,15 @@ function ifstring(object, options, currentKey) {
 
 function iffunction(object, options, currentKey) {
 
-    return typeof object === 'function'
+	return typeof object === 'function'
 
-        ? currentKey === object.name
+		? currentKey === object.name
 
-            ? functionToString(object)
+			? functionToString(object)
 
-            : `${currentKey}: ${functionToString(object)}`
+			: `${currentKey}: ${functionToString(object)}`
 
-        : `${currentKey}: ${ifstring(object, options, currentKey)}`
+		: `${currentKey}: ${ifstring(object, options, currentKey)}`
 
 }
 
