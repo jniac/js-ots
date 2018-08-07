@@ -140,7 +140,7 @@ export default function ots(object, options = {}) {
 
 	}
 
-	let prefix = object.constructor.name
+	let prefix = object.constructor ? object.constructor.name : ''
 
 	prefix = prefix === 'Object' ? '' : prefix + ' '
 
