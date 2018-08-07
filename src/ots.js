@@ -94,14 +94,35 @@ function iffunction(object, options, currentKey) {
 
 }
 
-export default function ots(object, options = {}) {
+export default function ots(object, options = {}, ...args) {
 
 	if (typeof options === 'number')
 		options = { depth: options }
 
-	let { depth = 2, printKeys = true, arrayMax = 100, toFixed = 2, printFunction = false, joinPattern = ', ' } = options
+	let {
+		depth = 2,
+		level = 0,
+		printKeys = true,
+		arrayMax = 100,
+		toFixed = 2,
+		printFunction = false,
+		joinPattern = ', ',
+		multiline = false,
+	} = options
 
-	options = { depth: depth - 1, printKeys, arrayMax, toFixed, printFunction, joinPattern }
+	if (args.length === 1 && args[0] === '\t')
+		multiline = true
+
+	options = {
+		depth: depth - 1,
+		level: level + 1,
+		printKeys,
+		arrayMax,
+		toFixed,
+		printFunction,
+		joinPattern,
+		multiline,
+	}
 
 	if (object === undefined)
 		return 'undefined'
@@ -146,9 +167,23 @@ export default function ots(object, options = {}) {
 
 	let keys = Object.keys(object)
 
-	let body = !depth
+	let tab = '\t'.repeat(level + 1)
+
+	if (depth === 0)
+		multiline = false
+
+	if (multiline)
+		joinPattern = `${joinPattern}\n${tab}`
+
+	let body = depth === 0
 		? (keys.length ? (printKeys ? keys.join(joinPattern) : `... (${keys.length})`) : '')
 		: keys.map(key => iffunction(object[key], options, key)).join(joinPattern)
+
+	if (multiline) {
+
+		return prefix + (body ? `{ \n${tab}${body}, \n${tab.slice(0, -1)}}` : '{}')
+
+	}
 
 	return prefix + (body ? `{ ${body} }` : '{}')
 

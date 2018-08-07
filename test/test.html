@@ -110,10 +110,20 @@
 
             }
 
+            class Toy {
+                constructor() {
+                    Object.assign(this, {
+                        color: 'red',
+                        size: 10,
+                    })
+                }
+            }
+
             let goodBoy = {
 
                 name: 'Toto',
                 age: 7 + 1/3,
+                toy: new Toy(),
 
                 salute(salutation, ...interlocutors) {
 
@@ -196,6 +206,9 @@
 
             log(ots(goodBoy))
             log(ots(goodBoy.salute('Hello', 'George', 'John', 'Paul', 'Ringo')))
+
+            log(ots(goodBoy, { multiline: true }))
+            log(ots(goodBoy, 1, '\t'))
 
 
         </script>
